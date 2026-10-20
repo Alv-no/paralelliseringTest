@@ -1,0 +1,27 @@
+{
+  "extraKnownMarketplaces": {
+    "claude-plugins-official": {
+      "source": {
+        "source": "git",
+        "url": "https://github.com/anthropics/claude-plugins-official.git"
+      }
+    }
+  },
+  "switchModelsOnFlag": true,
+  "hooks": {
+    "PreToolUse": [
+      {
+        "matcher": "Read|Write|Edit|Glob|Grep|NotebookEdit|Bash|PowerShell",
+        "hooks": [
+          {
+            "type": "command",
+            "command": "node",
+            "args": ["C:/Users/leno/.claude/hooks/path-guard.mjs"],
+            "timeout": 10,
+            "onFailure": "block"
+          }
+        ]
+      }
+    ]
+  }
+}

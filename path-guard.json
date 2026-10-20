@@ -1,0 +1,23 @@
+{
+  "//": "Mapper Claude kan lese og skrive i uten å spørre, i tillegg til prosjektmappa til økta. Alt annet gir en godkjenningsdialog. Miljøvariabler (%TEMP%, %USERPROFILE%) utvides. Endringer gjelder fra neste verktøykall.",
+  "//allowProjectDir": "true: mappa økta ble startet i (CLAUDE_PROJECT_DIR) er alltid tillatt — men aldri en hel disk eller hele hjemmemappa. Sett false for å bare bruke lista under.",
+  "allowProjectDir": true,
+  "allowed": [
+    "C:\\Code\\alv",
+    "%TEMP%\\claude"
+  ],
+  "//readOnly": "Mapper Claude kan LESE uten å spørre (Read, Glob, Grep). Skriving og shell-kommandoer som nevner dem gir dialog. ~/.claude er her fordi settings.json og denne hooken ligger der — skrivetilgang ville latt Claude slå av sin egen vakt.",
+  "readOnly": [
+    "%USERPROFILE%\\.claude"
+  ],
+  "//runnable": "Skript som kan KJØRES uten å spørre — når stien står som kommandoen (først, eller etter bash/sh/node/pwsh/python/&). Står den andre steder i kommandoen, eller redigeres fila med Edit/Write, gir det dialog som vanlig. Hele stien, ikke mapper.",
+  "runnable": [
+    "%USERPROFILE%\\.claude\\scripts\\git-pat-setup.sh"
+  ],
+  "//alwaysOk": "Stier som aldri skal utløse spørsmål, selv om de ligger utenfor (typisk /dev/null i Git Bash).",
+  "alwaysOk": [
+    "/dev/null",
+    "NUL",
+    "$null"
+  ]
+}

@@ -1,0 +1,433 @@
+<!doctype html><html><head><meta charset=utf8><meta name=viewport content="width=device-width,initial-scale=1,viewport-fit=cover"><style>:root{color-scheme:light;box-sizing:border-box;padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px)}html{scroll-padding-top:env(safe-area-inset-top,0px)}body{margin:0;padding:0;font:14px -apple-system,BlinkMacSystemFont,sans-serif;background:#fff;color:#000}img{max-width:100%}[hidden]:not([hidden=until-found i]){display:none!important}</style></head><body>
+<title>Steng hemmelighetene</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Libre+Baskerville:wght@700&family=Jost:wght@400;500;600&family=JetBrains+Mono:wght@400;500&display=swap">
+<style>
+  /* Layout: én smal lesekolonne, nummererte steg i margen som på kursslidene, kode i egne bokser. */
+  :root {
+    --bg: #f1e6c9;
+    --surface: #f8f0dc;
+    --ink: #213846;
+    --muted: #5d6b6a;
+    --step: #8c9a6b;
+    --rule: #dccfae;
+    --code-bg: #e8dcbc;
+    --deny: #a6342a;
+    --ask: #9a6a12;
+    --ok: #4e6b3a;
+    --display: "Libre Baskerville", Georgia, "Times New Roman", serif;
+    --body: "Jost", "Segoe UI", system-ui, sans-serif;
+    --mono: "JetBrains Mono", Consolas, "Cascadia Mono", monospace;
+  }
+  @media (prefers-color-scheme: dark) {
+    :root:not([data-theme="light"]) {
+      --bg: #172630; --surface: #1e303c; --ink: #ece2c8; --muted: #a6ad9f; --step: #a9b886;
+      --rule: #2e4250; --code-bg: #12202a; --deny: #e5806f; --ask: #e0b45c; --ok: #a9c48c;
+      color-scheme: dark;
+    }
+  }
+  :root[data-theme="dark"] {
+    --bg: #172630; --surface: #1e303c; --ink: #ece2c8; --muted: #a6ad9f; --step: #a9b886;
+    --rule: #2e4250; --code-bg: #12202a; --deny: #e5806f; --ask: #e0b45c; --ok: #a9c48c;
+    color-scheme: dark;
+  }
+
+  body { background: var(--bg); color: var(--ink); font: 400 17px/1.6 var(--body); }
+  .page { max-width: 46rem; margin: 0 auto; padding-inline: 20px; padding-block: 48px 72px; }
+
+  .eyebrow { display: flex; flex-wrap: wrap; align-items: center; gap: 12px; font-weight: 600; font-size: 13px; }
+  .badge { background: var(--ink); color: var(--bg); padding: 3px 10px; border-radius: 4px; letter-spacing: .08em; text-transform: uppercase; }
+  .eyebrow span:last-child { color: var(--ask); }
+  h1 { font: 700 clamp(2rem, 6vw, 2.9rem)/1.15 var(--display); margin: 14px 0 12px; text-wrap: balance; }
+  .lede { font-size: 1.1rem; max-width: 38rem; margin: 0 0 8px; }
+  .note { color: var(--muted); font-size: .95rem; margin: 0; }
+
+  .outcomes { display: grid; gap: 8px; margin: 28px 0 8px; padding: 0; list-style: none; }
+  .outcomes li { display: flex; gap: 12px; align-items: baseline; }
+  .pill { flex: none; font: 600 12px/1 var(--mono); padding: 5px 8px; border-radius: 4px; border: 1.5px solid currentColor; min-width: 3.6rem; text-align: center; }
+  .pill.deny { color: var(--deny); } .pill.ask { color: var(--ask); } .pill.ok { color: var(--ok); }
+
+  ol.steps { list-style: none; padding: 0; margin: 40px 0 0; counter-reset: s; }
+  ol.steps > li { counter-increment: s; display: grid; grid-template-columns: 3.4rem minmax(0, 1fr); gap: 0 12px; padding: 26px 0; border-top: 1px solid var(--rule); }
+  ol.steps > li::before { content: counter(s, decimal-leading-zero); font: 700 1.6rem/1.2 var(--display); color: var(--step); }
+  .step-body { min-width: 0; }
+  h2 { font: 500 1.3rem/1.3 var(--body); margin: 0 0 6px; }
+  h3 { font: 600 1rem/1.3 var(--body); margin: 22px 0 6px; }
+  p { margin: 0 0 10px; }
+  code { font: 400 .86em var(--mono); background: var(--code-bg); padding: 1px 5px; border-radius: 3px; }
+
+  .code { position: relative; margin: 10px 0 14px; }
+  .code pre { margin: 0; background: var(--code-bg); border-radius: 6px; padding: 14px 16px; padding-right: 84px; overflow-x: auto; font: 400 13.5px/1.55 var(--mono); }
+  .code pre.tall { max-height: 22rem; }
+  .copy { position: absolute; top: 8px; right: 8px; font: 500 13px var(--body); color: var(--ink); background: var(--surface); border: 1px solid var(--rule); border-radius: 4px; padding: 4px 10px; cursor: pointer; }
+  .copy:hover { border-color: var(--ink); }
+  .copy:focus-visible, summary:focus-visible { outline: 2px solid var(--ink); outline-offset: 2px; }
+  .label { font: 500 13px var(--mono); color: var(--muted); margin: 14px 0 -4px; overflow-wrap: anywhere; }
+
+  details { margin: 10px 0 14px; }
+  summary { cursor: pointer; font-weight: 500; }
+
+  .table-wrap { overflow-x: auto; margin: 10px 0 6px; }
+  table { border-collapse: collapse; width: 100%; font-size: .95rem; }
+  th, td { text-align: left; vertical-align: top; padding: 9px 10px 9px 0; border-bottom: 1px solid var(--rule); }
+  th { font-weight: 600; font-size: .85rem; color: var(--muted); }
+  td:first-child { min-width: 14rem; }
+
+  .callout { border-left: 3px solid var(--ask); padding: 2px 0 2px 14px; margin: 14px 0; }
+  footer { margin-top: 40px; padding-top: 18px; border-top: 1px solid var(--rule); color: var(--muted); font-size: .92rem; }
+  footer h2 { color: var(--ink); font-size: 1.05rem; }
+  footer ul { margin: 6px 0 0; padding-left: 1.1rem; }
+  footer li { margin-bottom: 4px; }
+
+  @media (max-width: 520px) {
+    ol.steps > li { grid-template-columns: minmax(0, 1fr); }
+    ol.steps > li::before { margin-bottom: 4px; }
+  }
+</style>
+
+<main class="page">
+  <div class="eyebrow"><span class="badge">Øvelse 1 · steg 03</span><span>ca. 10 minutter · Windows</span></div>
+  <h1>Steng hemmelighetene</h1>
+  <p class="lede">Når du er ferdig, kan ikke Claude Code lese nøklene dine, og den må spørre deg før den rører noe utenfor prosjektet du jobber i.</p>
+  <p class="note">Gjelder Claude Code på Windows, med PowerShell eller Git Bash. I WSL fungerer deny-reglene, men ikke hooken.</p>
+
+  <ul class="outcomes" aria-label="Hva oppsettet gjør">
+    <li><span class="pill deny">STOPP</span><span><code>~/.azure</code>, <code>~/.aws</code>, <code>~/.ssh</code>, <code>.env</code> og <code>secrets.*</code> blir avvist, også i shell-kommandoer.</span></li>
+    <li><span class="pill deny">STOPP</span><span>Kommandoer som skriver ut lagrede tokens, som <code>git credential fill</code>, <code>gh auth token</code> og <code>az account get-access-token</code>. <code>git push</code> og <code>gh pr create</code> virker som før.</span></li>
+    <li><span class="pill ask">SPØR</span><span>Alt utenfor prosjektmappa gir en dialog du godkjenner eller avslår.</span></li>
+    <li><span class="pill ok">OK</span><span>Arbeid inne i prosjektet går som før.</span></li>
+  </ul>
+
+  <ol class="steps">
+    <li>
+      <div class="step-body">
+        <h2>Sjekk at Node er installert</h2>
+        <p>Hooken er et lite Node-skript. Kjør dette i PowerShell. Du trenger versjon 18 eller nyere.</p>
+        <div class="code"><pre id="c-node">node --version</pre><button class="copy" data-for="c-node">Kopier</button></div>
+        <p>Får du feil, installer Node LTS fra <a href="https://nodejs.org">nodejs.org</a> før du går videre.</p>
+      </div>
+    </li>
+
+    <li>
+      <div class="step-body">
+        <h2>Lagre hooken</h2>
+        <p>Lag mappa og åpne den første fila i Notisblokk:</p>
+        <div class="code"><pre id="c-mkdir">New-Item -ItemType Directory -Force $HOME\.claude\hooks | Out-Null
+notepad $HOME\.claude\hooks\path-guard.mjs</pre><button class="copy" data-for="c-mkdir">Kopier</button></div>
+        <p>Lim inn skriptet under, og lagre.</p>
+        <details>
+          <summary>Vis <code>path-guard.mjs</code></summary>
+          <div class="code"><pre class="tall" id="c-mjs">// path-guard: PreToolUse-hook for Claude Code på Windows.
+//
+//   deny      -&gt; blokkerer (hemmeligheter: ~/.azure, ~/.aws, ~/.ssh, .env, secrets.*)
+//   utenfor   -&gt; spør deg i en dialog
+//   innenfor  -&gt; går rett gjennom
+//
+// Innstillinger i path-guard.json ved siden av denne fila. Filverktøyene (Read, Write, Edit,
+// Glob, Grep) sjekkes presist. Bash/PowerShell er fritekst: stier letes fram med mønstre, og en
+// sti som bygges i en variabel slipper gjennom. Det er et sikkerhetsnett, ikke en vegg.
+// Feiler skriptet selv, svarer det «ask» — aldri stille «ok».
+
+import { readFileSync } from "node:fs";
+import { dirname, join, win32 } from "node:path";
+import { fileURLToPath } from "node:url";
+
+const here = dirname(fileURLToPath(import.meta.url));
+
+function expandEnv(s) {
+  return s
+    .replace(/%([A-Za-z_][A-Za-z0-9_]*)%/g, (m, n) =&gt; process.env[n] ?? m)
+    .replace(/\$env:([A-Za-z_][A-Za-z0-9_]*)/gi, (m, n) =&gt; process.env[n] ?? process.env[n.toUpperCase()] ?? m)
+    .replace(/\$\{([A-Za-z_][A-Za-z0-9_]*)\}/g, (m, n) =&gt; process.env[n] ?? m)
+    .replace(/\$(HOME|USERPROFILE|TEMP|TMP|APPDATA|LOCALAPPDATA|PROGRAMDATA)\b/g, (m, n) =&gt;
+      n === "HOME" ? (process.env.USERPROFILE ?? m) : (process.env[n] ?? m),
+    );
+}
+
+// Absolutt Windows-form: /c/x -&gt; C:\x, ~ -&gt; hjemmemappa, relativ -&gt; mot cwd.
+function normalize(p, cwd) {
+  let s = expandEnv(p.trim().replace(/^["']|["']$/g, ""));
+  if (/^~(?=[\\/]|$)/.test(s)) s = (process.env.USERPROFILE ?? "") + s.slice(1);
+  const msys = s.match(/^\/([a-zA-Z])(?=\/|$)(.*)$/);
+  if (msys) s = `${msys[1].toUpperCase()}:${msys[2] || "\\"}`;
+  else if (/^\/(tmp|usr|etc|bin|mingw64|ucrt64|opt|var|home)(\/|$)/.test(s)) return `[Git Bash]${s}`;
+  return win32.resolve(cwd || process.cwd(), s);
+}
+
+const toRoot = (r) =&gt; win32.resolve(expandEnv(r)).toLowerCase().replace(/[\\/]+$/, "");
+
+function isInside(abs, roots) {
+  const a = abs.toLowerCase().replace(/[\\/]+$/, "");
+  return roots.some((r) =&gt; a === r || a.startsWith(r + "\\"));
+}
+
+// ".env", ".env.*", "secrets.*" -&gt; regex mot filnavnet.
+const nameMatcher = (globs) =&gt; {
+  const res = globs.map(
+    (g) =&gt; new RegExp("^" + g.replace(/[.+^${}()|[\]\\]/g, "\\$&amp;").replace(/\*/g, ".*").replace(/\?/g, ".") + "$", "i"),
+  );
+  return (p) =&gt; res.some((re) =&gt; re.test(win32.basename(p.replace(/[\\/]+$/, ""))));
+};
+
+// Et tillatt skript der det står som kommandoen som kjøres (først, eller etter en tolk) fjernes.
+// Står samme sti andre steder (`&gt; skript.sh`), sjekkes den som vanlig.
+function stripRunnable(cmd, runnable, cwd) {
+  if (runnable.length === 0) return cmd;
+  const start = String.raw`(^|(?:&amp;&amp;|\|\||[;&amp;|\n(])\s*)`;
+  const interp = String.raw`((?:(?:bash|sh|node|pwsh|powershell|python3?|&amp;)(?:\.exe)?\s+(?:-(?:File|NoProfile|ExecutionPolicy\s+\S+)\s+)*)?)`;
+  const token = String.raw`("[^"]+"|'[^']+'|[^\s;&amp;|]+)`;
+  return cmd.replace(new RegExp(start + interp + token, "gi"), (all, pre, int, tok) =&gt;
+    runnable.includes(normalize(tok, cwd).toLowerCase()) ? `${pre}${int}` : all,
+  );
+}
+
+// Stikandidater i en shell-kommando. Bevisst grovt: heller et spørsmål for mye.
+function pathsInCommand(cmd, isSecretName) {
+  const found = new Set();
+  // Venstresiden i en tilordning er et navn, ikke en sti: `$env:TEMP='C:\x'` skal sjekke C:\x.
+  const text = expandEnv(
+    cmd
+      .replace(/\$env:[A-Za-z_][A-Za-z0-9_]*\s*=/gi, " ")
+      .replace(/\b(?:export|set|setx)\s+[A-Za-z_][A-Za-z0-9_]*\s*=?/gi, " "),
+  );
+  const boundary = String.raw`(?:^|[\s"'=(&lt;&gt;|;&amp;,])`;
+  const patterns = [
+    String.raw`[A-Za-z]:[\\/][^\s"'|;&amp;&lt;&gt;()]*`, // C:\x
+    String.raw`\\\\[^\s"'|;&amp;&lt;&gt;()]+`, // \\server\share
+    String.raw`/[a-zA-Z](?=/|[\s"']|$)[^\s"'|;&amp;&lt;&gt;()]*`, // /c/x
+    String.raw`/(?:tmp|usr|etc|bin|mingw64|ucrt64|opt|var|home)(?=/|[\s"']|$)[^\s"'|;&amp;&lt;&gt;()]*`,
+    String.raw`~(?=[\\/]|[\s"']|$)[^\s"'|;&amp;&lt;&gt;()]*`, // ~ og ~/x
+    String.raw`[^\s"'|;&amp;&lt;&gt;()]*\.\.(?:[\\/][^\s"'|;&amp;&lt;&gt;()]*)?`, // alt med ..
+  ];
+  for (const p of patterns) {
+    for (const m of text.matchAll(new RegExp(boundary + "(" + p + ")", "g"))) {
+      const s = m[1].replace(/[=,;:]+$/, ""); // `a.cs,` `x=` -&gt; a.cs, x
+      if (s) found.add(s);
+    }
+  }
+  // Relative filnavn som `cat .env` har ingen skråstrek og fanges ikke over.
+  for (const t of text.split(/[\s"'|;&amp;&lt;&gt;(),=]+/)) if (t &amp;&amp; isSecretName(t)) found.add(t);
+  return [...found];
+}
+
+function pathsInFileTool(name, input) {
+  const out = [];
+  for (const key of ["file_path", "notebook_path", "path"]) {
+    if (typeof input[key] === "string" &amp;&amp; input[key]) out.push(input[key]);
+  }
+  if ((name === "Glob" || name === "Grep") &amp;&amp; !input.path) {
+    const pat = typeof input.pattern === "string" ? input.pattern : "";
+    out.push(/^([A-Za-z]:[\\/]|\/[a-zA-Z]\/|~)/.test(pat) ? pat.replace(/[*?[{].*$/, "") || "." : ".");
+  }
+  return out;
+}
+
+function respond(decision, reason) {
+  process.stdout.write(
+    JSON.stringify({
+      hookSpecificOutput: { hookEventName: "PreToolUse", permissionDecision: decision, permissionDecisionReason: reason },
+    }),
+  );
+  process.exit(0);
+}
+
+try {
+  const event = JSON.parse(readFileSync(0, "utf8"));
+  const config = JSON.parse(readFileSync(join(here, "path-guard.json"), "utf8"));
+  const cwd = event.cwd;
+  const name = event.tool_name;
+  const input = event.tool_input ?? {};
+
+  const roots = (config.allowed ?? []).map(toRoot);
+  // Prosjektet økta jobber i er alltid tillatt — men aldri en hel disk eller hele hjemmemappa.
+  const projectDir = config.allowProjectDir !== false &amp;&amp; (process.env.CLAUDE_PROJECT_DIR || cwd);
+  if (projectDir) {
+    const p = toRoot(projectDir);
+    if (!/^[a-z]:$/.test(p) &amp;&amp; p !== toRoot(process.env.USERPROFILE ?? "")) roots.push(p);
+  }
+  const readRoots = (config.readOnly ?? []).map(toRoot);
+  const denyRoots = (config.deny ?? []).map(toRoot);
+  const isSecretName = nameMatcher(config.denyNames ?? []);
+  const runnable = (config.runnable ?? []).map((r) =&gt; normalize(r, cwd).toLowerCase());
+  const alwaysOk = new Set((config.alwaysOk ?? []).map((s) =&gt; s.toLowerCase()));
+
+  const isShell = name === "Bash" || name === "PowerShell";
+  const readsOnly = name === "Read" || name === "Glob" || name === "Grep";
+
+  // Tokens i Windows Legitimasjonsbehandling er ikke filer, så stisjekken ser dem aldri.
+  // Kommandoene som skriver dem ut, stoppes på navn — uansett hvor i kommandoen de står.
+  if (isShell) {
+    const cmd = String(input.command ?? "");
+    const hit = (config.denyCommands ?? []).find((re) =&gt; new RegExp(re, "i").test(cmd));
+    if (hit) {
+      respond(
+        "deny",
+        `⛔ BLOKKERT: HENTER UT TOKEN\n\npath-guard: kommandoen kan skrive ut et lagret token eller passord ` +
+          `(treff på denyCommands: ${hit}).\nDette slippes ikke gjennom. Trenger du det, gjør det selv utenfor Claude.`,
+      );
+    }
+  }
+  const candidates = isShell
+    ? pathsInCommand(stripRunnable(String(input.command ?? ""), runnable, cwd), isSecretName)
+    : pathsInFileTool(name, input);
+
+  const denied = [];
+  const outside = [];
+  for (const c of candidates) {
+    if (alwaysOk.has(c.toLowerCase())) continue;
+    const abs = normalize(c, cwd);
+    if (abs.startsWith("[Git Bash]")) outside.push(abs);
+    else if (isInside(abs, denyRoots) || isSecretName(abs)) denied.push(abs);
+    else if (isInside(abs, roots)) continue;
+    else if (isInside(abs, readRoots)) {
+      if (!readsOnly) outside.push(`${abs} (kun lesetilgang)`);
+    } else outside.push(abs);
+  }
+  if (isShell &amp;&amp; cwd &amp;&amp; !isInside(win32.resolve(cwd), roots)) outside.push(`${win32.resolve(cwd)} (arbeidsmappe)`);
+
+  const list = (xs) =&gt; [...new Set(xs)].map((p) =&gt; `  - ${p}`).join("\n");
+  if (denied.length &gt; 0) {
+    respond(
+      "deny",
+      `⛔ BLOKKERT: HEMMELIGHET\n\npath-guard: ${name} rører en sti på deny-lista:\n${list(denied)}\n` +
+        `Dette slippes ikke gjennom. Trenger du det, gjør det selv utenfor Claude.`,
+    );
+  }
+  if (outside.length === 0) process.exit(0);
+  const headline = isShell
+    ? "🔴 SKUMMEL SHELL-KOMMANDO (kan lese eller skrive)"
+    : readsOnly
+      ? "🔴 SKUMMEL LESING"
+      : "🔴 SKUMMEL SKRIVING";
+  respond(
+    "ask",
+    `${headline}\n\npath-guard: ${name} rører ${outside.length === 1 ? "en sti" : "stier"} utenfor tillatte mapper:\n` +
+      `${list(outside)}\nRediger ${join(here, "path-guard.json")} for å endre hva som er tillatt.`,
+  );
+} catch (err) {
+  respond("ask", `path-guard kunne ikke vurdere kallet (${err.message}) — spør for sikkerhets skyld.`);
+}</pre><button class="copy" data-for="c-mjs">Kopier</button></div>
+        </details>
+        <p>Gjør det samme med innstillingsfila:</p>
+        <div class="code"><pre id="c-np2">notepad $HOME\.claude\hooks\path-guard.json</pre><button class="copy" data-for="c-np2">Kopier</button></div>
+        <div class="code"><pre id="c-json">{
+  "allowProjectDir": true,
+  "allowed": ["%TEMP%\\claude"],
+  "readOnly": ["%USERPROFILE%\\.claude"],
+  "deny": ["%USERPROFILE%\\.azure", "%USERPROFILE%\\.aws", "%USERPROFILE%\\.ssh"],
+  "denyNames": [".env", ".env.*", "secrets.*"],
+  "denyCommands": [
+    "\\bgit\\b[^|;&amp;\\n]*\\bcredential(-manager)?\\s+(fill|get)\\b",
+    "\\bgit-credential-[\\w-]+(\\.exe)?\\s+(get|fill)\\b",
+    "\\bgh(\\.exe)?\\s+auth\\s+token\\b",
+    "\\bgh(\\.exe)?\\s+auth\\s+status\\b[^|;&amp;\\n]*(--show-token|\\s-t\\b)",
+    "\\baz(\\.cmd)?\\s+account\\s+get-access-token\\b",
+    "\\bazd(\\.exe)?\\s+auth\\s+token\\b",
+    "Get-AzAccessToken|Get-StoredCredential|CredRead|PasswordVault"
+  ],
+  "runnable": [],
+  "alwaysOk": ["/dev/null", "NUL", "$null"]
+}</pre><button class="copy" data-for="c-json">Kopier</button></div>
+      </div>
+    </li>
+
+    <li>
+      <div class="step-body">
+        <h2>Koble den inn, og legg til deny-reglene</h2>
+        <p>Ta en kopi først, så kan du gå tilbake hvis noe blir feil:</p>
+        <div class="code"><pre id="c-np3">Copy-Item $HOME\.claude\settings.json $HOME\.claude\settings.json.bak -ErrorAction SilentlyContinue
+notepad $HOME\.claude\settings.json</pre><button class="copy" data-for="c-np3">Kopier</button></div>
+        <p>Er fila tom eller ny, lim inn alt under. Har den innhold fra før, legg <code>"permissions"</code> og <code>"hooks"</code> inn ved siden av det som står der, med komma mellom. Står <code>"permissions"</code> der allerede, legg <code>"deny"</code>-lista <em>inn i</em> den. To <code>"permissions"</code> i samme fil gjør at den første forsvinner uten feilmelding.</p>
+        <div class="code"><pre id="c-settings">{
+  "permissions": {
+    "deny": [
+      "Read(**/.env)",
+      "Read(**/.env.*)",
+      "Read(**/secrets.*)",
+      "Read(~/.azure/**)",
+      "Read(~/.aws/**)",
+      "Read(~/.ssh/**)"
+    ]
+  },
+  "hooks": {
+    "PreToolUse": [
+      {
+        "matcher": "Read|Write|Edit|Glob|Grep|NotebookEdit|Bash|PowerShell",
+        "hooks": [
+          {
+            "type": "command",
+            "command": "node \"$HOME/.claude/hooks/path-guard.mjs\"",
+            "timeout": 10,
+            "onFailure": "block"
+          }
+        ]
+      }
+    ]
+  }
+}</pre><button class="copy" data-for="c-settings">Kopier</button></div>
+        <p class="note">Deny-reglene stopper filverktøyene. Hooken stopper i tillegg shell-kommandoer som <code>cat ~/.azure/config</code>, som deny-reglene ikke ser.</p>
+      </div>
+    </li>
+
+    <li>
+      <div class="step-body">
+        <h2>Start en ny økt og test</h2>
+        <p>Innstillingene lastes når en økt starter. Åpne en ny Claude Code-økt i et prosjekt og be om disse fire tingene:</p>
+        <div class="table-wrap">
+          <table>
+            <thead><tr><th>Skriv til Claude</th><th>Riktig resultat</th></tr></thead>
+            <tbody>
+              <tr><td>Les filene i <code>~/.azure</code></td><td><span class="pill deny">STOPP</span> Avvist av deny-regelen</td></tr>
+              <tr><td>Kjør <code>cat ~/.azure/config</code> i Bash</td><td><span class="pill deny">STOPP</span> ⛔ BLOKKERT: HEMMELIGHET</td></tr>
+              <tr><td>Kjør <code>gh auth token</code></td><td><span class="pill deny">STOPP</span> ⛔ BLOKKERT: HENTER UT TOKEN</td></tr>
+              <tr><td>Les <code>C:\Windows\win.ini</code></td><td><span class="pill ask">SPØR</span> 🔴 SKUMMEL LESING. Trykk <strong>Deny</strong>.</td></tr>
+            </tbody>
+          </table>
+        </div>
+        <p>Går noen av dem rett gjennom, sjekk at <code>settings.json</code> er gyldig JSON og at økta ble startet etter at du lagret.</p>
+      </div>
+    </li>
+  </ol>
+
+  <div class="callout">
+    <h3>Når dialogen dukker opp</h3>
+    <p>Les stiene i dialogen. Skjønner du hvorfor Claude trenger dem, godkjenn. Er du i tvil, trykk <strong>Deny</strong>. I shell-kommandoer ser hooken bare teksten, så en kommando som bare <em>nevner</em> en sti, gir også dialog. Det er meningen.</p>
+    <p>Det samme gjelder blokkeringene: <code>grep "gh auth token" README.md</code> blir stoppet selv om den bare søker etter teksten. Trenger du en slik kommando, kjør den selv i terminalen.</p>
+  </div>
+
+  <footer>
+    <h2>Tilpass i <code>path-guard.json</code></h2>
+    <ul>
+      <li><code>allowed</code>: mapper Claude kan lese og skrive fritt i, i tillegg til prosjektet.</li>
+      <li><code>readOnly</code>: mapper Claude kan lese, men ikke skrive i. <code>~/.claude</code> står der, så Claude ikke kan slå av sin egen hook.</li>
+      <li><code>deny</code> og <code>denyNames</code>: mapper og filnavn som alltid blokkeres.</li>
+      <li><code>denyCommands</code>: mønstre for kommandoer som alltid blokkeres, som de som henter ut tokens fra Windows Legitimasjonsbehandling.</li>
+      <li><code>runnable</code>: hele stier til skript som kan kjøres uten dialog, men ikke redigeres.</li>
+    </ul>
+    <p style="margin-top:12px">Endringer gjelder fra neste verktøykall. Hooken er et sikkerhetsnett, ikke en vegg: en sti som bygges i en variabel i et skript, slipper gjennom. Krasjer hooken, eller mangler Node, blokkeres alle verktøykall til det er fikset.</p>
+  </footer>
+</main>
+
+<script>
+  document.querySelectorAll(".copy").forEach((btn) => {
+    btn.addEventListener("click", async () => {
+      const pre = document.getElementById(btn.dataset.for);
+      const text = pre.innerText;
+      try {
+        await navigator.clipboard.writeText(text);
+        btn.textContent = "Kopiert";
+      } catch {
+        const range = document.createRange();
+        range.selectNodeContents(pre);
+        const sel = getSelection();
+        sel.removeAllRanges();
+        sel.addRange(range);
+        btn.textContent = "Trykk Ctrl+C";
+      }
+      setTimeout(() => (btn.textContent = "Kopier"), 1800);
+    });
+  });
+</script>
+
+</body></html>
